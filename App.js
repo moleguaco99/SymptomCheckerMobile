@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, SafeAreaView, ScrollView, Dimensions, Image} from 'react-native';
-import { Home } from './Home';
+import { Symptoms, SymptomsStore } from './Symptoms';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 
-export default class App extends React.Component {
-  render() {
+export default function App() {
     return (
+      <SymptomsStore>
         <AppContainer />
+      </SymptomsStore>
     )
-  } 
-}
+} 
 
 const CustomDrawerComponent = (props) => (
-  <SafeAreaView style={{flex: 1, }}>
+  <SafeAreaView style={{flex: 1, elevation: 5}}>
       <Image style={{width: 100, height: 100, alignSelf:"center", marginTop:"5%"}}
           source={require('./assets/logo.png')} />
       <ScrollView>
@@ -22,10 +22,8 @@ const CustomDrawerComponent = (props) => (
   </SafeAreaView>
 )
 
-const AppDrawerNavigator = createDrawerNavigator({
-    Home: { screen: Home }
-    
-  },
+const AppDrawerNavigator = createDrawerNavigator(
+  {Symptoms: {screen: Symptoms}},
   {
     contentComponent: CustomDrawerComponent,
     drawerWidth: Dimensions.get("window").width - 150,
