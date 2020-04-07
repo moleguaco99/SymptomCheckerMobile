@@ -1,15 +1,18 @@
 import React from 'react';
-import { Easing, Animated } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Icon } from 'react-native-elements';
 import { Home } from './Home';
+import { LoadingScreen } from './LoadingScreen';
+import { OrganPage } from './OrganPage';
 
 export const Symptoms = createStackNavigator(
     {
-        Home: { screen: Home }
+        Home: { screen: Home },
+        LoadingScreen: { screen: LoadingScreen },
+        OrganPage: { screen: OrganPage }
     },
     {
-        initialRouteName: "Home",
+        initialRouteName: "LoadingScreen",
     }
 );
 

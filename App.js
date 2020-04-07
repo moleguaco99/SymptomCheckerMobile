@@ -3,6 +3,7 @@ import { View, SafeAreaView, ScrollView, Dimensions, Image} from 'react-native';
 import { Symptoms, SymptomsStore } from './Symptoms';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
+import { About } from './About';
 
 export default function App() {
     return (
@@ -23,7 +24,10 @@ const CustomDrawerComponent = (props) => (
 )
 
 const AppDrawerNavigator = createDrawerNavigator(
-  {Symptoms: {screen: Symptoms}},
+  { 
+    Symptoms: {screen: Symptoms},
+    About: {screen: About}
+  },
   {
     contentComponent: CustomDrawerComponent,
     drawerWidth: Dimensions.get("window").width - 150,

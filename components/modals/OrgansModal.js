@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, View, ScrollView, Image } from 'react-native';
 import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
 import { ListItem, Icon, Button } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale'; 
+import { SymptomsContext } from '../../Symptoms/SymptomsContext';
 
 let dictionary = {
     "head": ["Brain", "Eyes", "Nose", "Tongue", "Face"],
@@ -10,31 +11,13 @@ let dictionary = {
     "limbs": ["Limbs"],
 }
 
-let images = {
-    "Brain" : require("./OrganImages/Brain.jpg"),
-    "Eyes" : require("./OrganImages/Eyes.jpg"),
-    "Nose" : require("./OrganImages/Nose.jpg"),
-    "Tongue" : require("./OrganImages/Tongue.jpg"),
-    "Face" : require("./OrganImages/Face.jpg"),
-    "Stomach" : require("./OrganImages/Stomach.jpg"),
-    "Heart" : require("./OrganImages/Heart.jpg"),
-    "Lungs" : require("./OrganImages/Lungs.jpg"),
-    "Excretory" : require("./OrganImages/Excretory.jpg"),
-    "Abdomen" : require("./OrganImages/Abdomen.jpg"),
-    "Back" : require("./OrganImages/Back.jpg"),
-    "Throat" : require("./OrganImages/Throat.jpg"),
-    "Chest" : require("./OrganImages/Chest.jpg"),
-    "Liver" : require("./OrganImages/Liver.jpg"),
-    "Neck" : require("./OrganImages/Neck.jpg"),
-    "Limbs" : require("./OrganImages/Limbs.jpg"),
-}
-
-export const OrgansModal = ({zone, navigation, width, height, marginTop, marginLeft, zIndex}) => {
+export const OrgansModal = ({zone, navigation, height, marginTop, marginLeft, zIndex}) => {
     const [show, setShow] = React.useState(false);
+    const { images } = React.useContext(SymptomsContext);
 
-    return <TouchableOpacity onPress={()=> setShow(true)} style={{position: 'absolute', backgroundColor:"white", width: width,
-                                                                 height: height, marginTop: marginTop, marginLeft: marginLeft, zIndex: zIndex}} > 
-                    <Modal visible={show} width={280} height={350}
+    return  <TouchableOpacity onPress={()=> setShow(true)} style={{position: 'absolute', backgroundColor:"#06D6A0", opacity:0, width: 'auto', height: height,
+                                                                 marginTop: marginTop, marginLeft: marginLeft, zIndex: zIndex}} > 
+                <Modal visible={show} width={280} height={350}
                         modalAnimation={new SlideAnimation({
                         slideFrom: 'bottom' })}>
                     <ModalContent>
@@ -48,15 +31,17 @@ export const OrgansModal = ({zone, navigation, width, height, marginTop, marginL
                         <ListItem
                             key={i}
                             Component={TouchableScale}
-                            leftElement={<Image source={images[l]} style={{width:22, height:18, borderRadius: 20}}></Image>}
+                            leftElement={<Image source={images[l]} style={{width:22, height:18, borderRadius:20}}></Image>}
                             friction={80}
                             tension={80}
                             activeScale={0.95} 
-                            containerStyle={{ backgroundColor:"white", borderRadius:2, alignSelf:"center", elevation:1, marginBottom:"1%"}}
+                            containerStyle={{ backgroundColor:"white", borderRadius:4, alignSelf:"center", elevation:1, marginBottom:"1%"}}
                             title={l}
                             titleStyle={{ color: '#1E2952', fontSize:10 }}
                             chevron={{color: '#1E2952'}}
-                            bottomDivider />
+                            bottomDivider
+                            onPress={()=> {navigation.navigate("OrganPage", {organ: l}); setShow(false)}}
+                            />
                     ))}
                     </ScrollView>
                     <View style={{marginTop:"10%"}}>
