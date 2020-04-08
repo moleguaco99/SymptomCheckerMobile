@@ -88,6 +88,8 @@ export const Home = ({ navigation }) => {
                         </View>
                     )}
                 </SymptomsContext.Consumer>
+                <SymptomsContext.Consumer>
+                    {({onDiagnosisCheck}) => (
                     <View style={{ marginTop:"2%", flexDirection:'row' }}>
                          <Button 
                             buttonStyle={{ backgroundColor:"orange", marginLeft:'18%', width:130, borderRadius:20 }}
@@ -97,7 +99,7 @@ export const Home = ({ navigation }) => {
                                 }
                             title="One last check, doc"
                             titleStyle={{fontSize:10, fontWeight:'300', marginLeft:"5%"}}
-                            onPress={()=>onChangeShow(!showSymptomsModal)}
+                            onPress={() => onChangeShow(!showSymptomsModal)}
                             />
                         <Button 
                             buttonStyle={{backgroundColor:"#06D6A0", width:130, borderRadius:20}}
@@ -106,8 +108,12 @@ export const Home = ({ navigation }) => {
                                     size={13} color="white" />
                                 }
                             title="Ready for diagnosis"
-                            titleStyle={{fontSize:10, fontWeight:'300', marginLeft:"5%"}}/>
-                    </View>
+                            titleStyle={{fontSize:10, fontWeight:'300', marginLeft:"5%"}}
+                            onPress={ async () => { const diagnostics = await onDiagnosisCheck(); 
+                                                    navigation.navigate("DiagnosticPage", {diagnostics: diagnostics})    
+                                                 }}/>
+                    </View>)}
+                    </SymptomsContext.Consumer>
                     <SymptomsModal show={showSymptomsModal} onChangeShow={onChangeShow} />
             </View>
 }

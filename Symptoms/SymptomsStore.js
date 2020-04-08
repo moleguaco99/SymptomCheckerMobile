@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useCallback, useContext } from 'react';
 import { SymptomsContext } from './SymptomsContext';
 import _ from 'lodash';
-import { httpGet, httpPost } from '../utils/Api';
+import { httpGet, httpPost, httpPostForDummies } from '../utils/Api';
 
 const initialState = {
     isLoading: null,
@@ -61,8 +61,15 @@ export const SymptomsStore = ({ children }) => {
         return searchingSymptoms;
     }
 
-    const onDiagnosisCheck = () => {
-        const response = httpPost("diagnosis", {searchingSymptoms})
+    const onDiagnosisCheck = async () => {
+        const setOfSymptoms = new Set(searchingSymptoms);
+        let symptomsString = "";
+
+        for(var index = 0; index < setOfSymptoms.size; index += 1){
+           symptomsString = symptomsString.concat(`${searchingSymptoms[index].symptomName};`)
+        }
+
+        const response = await httpPost("diagnosis", symptomsString);
         return response;
     }
 

@@ -29,7 +29,7 @@ export const SymptomsModal = ({ show, onChangeShow }) => {
                                 containerStyle={{ backgroundColor:"white", borderRadius:4, alignSelf:"center", elevation:1, marginBottom:"1%"}}
                                 leftElement={<Icon type='font-awesome'
                                                     name="times"
-                                                    size={10}
+                                                    size={12}
                                                     color="#EF3E36"
                                                     onPress={()=> { onChangeSymptoms(onSymptomDelete(l)); }}      
                                             />}

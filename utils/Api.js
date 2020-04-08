@@ -32,11 +32,18 @@ export const httpGet = path =>
         })
     );
 
-export const httpPost = (path, content) =>
-    withErrorHandling(
-        fetch(`${httpApiUrl}/${path}`, {
-            method: 'POST',
-            body: JSON.stringify(content),
-            headers: buildHeaders()
-        })
-    );
+export const httpPost = async (path, content) =>{
+    try{
+        const response = await fetch(`${httpApiUrl}/${path}`, {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: buildHeaders()
+            })
+            
+        const data = await response.json();
+        return data;
+    }
+    catch(err) {
+        console.log(err)
+    }
+}
