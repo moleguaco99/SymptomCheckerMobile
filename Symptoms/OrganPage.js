@@ -27,6 +27,16 @@ export const OrganPage = ({ navigation }) => {
         }), "occurenceProbability").reverse();
     }
 
+    function processName(symptomName){
+        let fields = symptomName.split("_");
+        let name = "";
+        fields[0] = fields[0].charAt(0).toUpperCase() + fields[0].slice(1);
+        for(let i = 0; i < fields.length; i += 1){
+            name += fields[i] + " ";
+        }
+        return name;
+    }
+
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => navigation.goBack())
       }, [])
@@ -64,7 +74,7 @@ export const OrganPage = ({ navigation }) => {
                                         Component={TouchableScale} friction={80} tension={80} 
                                         activeScale={0.95} 
                                         containerStyle={{ backgroundColor:"#1E2952", width:'90%', borderRadius:5, alignSelf:"center"}}
-                                        title={l.symptomName} titleStyle={{ color: 'white', fontSize:10 }}
+                                        title={processName(l.symptomName)} titleStyle={{ color: 'white', fontSize:10 }}
                                         rightTitle="Frequency:" rightTitleStyle={{ color: 'white', fontSize:10 }}
                                         rightElement={<ProgressBarAndroid styleAttr="Horizontal"
                                                             indeterminate={false} color={"#FF6060"}

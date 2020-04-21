@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, ProgressBarAndroid, Text, BackHandler, ToastAndroid } from 'react-native';
+import { View, ProgressBarAndroid, Text, BackHandler, ToastAndroid, AsyncStorage } from 'react-native';
 import { Icon, ListItem, SearchBar, Button } from 'react-native-elements';
 import { MainHeader } from '../components/headers/MainHeader';
 import { HumanBody } from '../HumanBody';
@@ -11,8 +11,8 @@ import _ from 'lodash';
 import { SymptomsModal } from '../components/modals/SymptomsModal';
 
 export const Home = ({ navigation }) => { 
-    const [ search, onChangeSearch ] = React.useState("");
-    const [ showSymptomsModal, onChangeShow ] = React.useState(false);
+    const [search, onChangeSearch] = React.useState("");
+    const [showSymptomsModal, onChangeShow] = React.useState(false);
 
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => true)
@@ -24,10 +24,20 @@ export const Home = ({ navigation }) => {
         onChangeSearch(event);
     }
 
+    function processName(symptomName){
+        let fields = symptomName.split("_");
+        let name = "";
+        fields[0] = fields[0].charAt(0).toUpperCase() + fields[0].slice(1);
+        for(let i = 0; i < fields.length; i += 1){
+            name += fields[i] + " ";
+        }
+        return name;
+    }
+
     function bodySymptoms(symptoms){
         if(search !== ""){
             symptoms = _.filter(symptoms, function(element){
-                return element.symptomName.startsWith(search)
+                return processName(element.symptomName).startsWith(search)
             })
         }
         return _.sortBy(_.filter(symptoms, function(element){
@@ -74,13 +84,13 @@ export const Home = ({ navigation }) => {
                                     Component={TouchableScale} friction={80} tension={80} 
                                     activeScale={0.95} 
                                     containerStyle={{ backgroundColor:"#1E2952", width:'90%', borderRadius:5, alignSelf:"center"}}
-                                    title={l.symptomName} titleStyle={{ color: 'white', fontSize:10 }}
+                                    title={processName(l.symptomName)} titleStyle={{ color: 'white', fontSize:10 }}
                                     rightTitle="Frequency:" rightTitleStyle={{ color: 'white', fontSize:10 }}
                                     rightElement={<ProgressBarAndroid styleAttr="Horizontal"
                                                         indeterminate={false} color={"#FF6060"}
                                                         progress={l.occurenceProbability} />}
                                     bottomDivider
-                                    onPress = {() => {ToastAndroid.show(`You have added '${l.symptomName}'`, ToastAndroid.SHORT); onSymptomTouch(l)}}
+                                    onPress = {() => {ToastAndroid.show(`You have added '${processName(l.symptomName)}'`, ToastAndroid.SHORT); onSymptomTouch(l)}}
                                     />
                                 ))}
                                 
@@ -110,7 +120,9 @@ export const Home = ({ navigation }) => {
                             title="Ready for diagnosis"
                             titleStyle={{fontSize:10, fontWeight:'300', marginLeft:"5%"}}
                             onPress={ async () => { const diagnostics = await onDiagnosisCheck(); 
-                                                    navigation.navigate("DiagnosticPage", {diagnostics: diagnostics})    
+                                                    const checking = JSON.parse(await AsyncStorage.getItem("CHECKED"));
+                                                    checking ? navigation.navigate("AnalysisPage", {diagnostics: diagnostics}) :
+                                                                navigation.navigate("DiagnosticPage", {diagnostics: diagnostics})    
                                                  }}/>
                     </View>)}
                     </SymptomsContext.Consumer>

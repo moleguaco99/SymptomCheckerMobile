@@ -9,6 +9,16 @@ export const SymptomsModal = ({ show, onChangeShow }) => {
     const { searchingSymptoms, onSymptomDelete } = React.useContext(SymptomsContext);
     const [ symptoms, onChangeSymptoms ] = React.useState(searchingSymptoms);
 
+    function processName(symptomName){
+        let fields = symptomName.split("_");
+        let name = "";
+        fields[0] = fields[0].charAt(0).toUpperCase() + fields[0].slice(1);
+        for(let i = 0; i < fields.length; i += 1){
+            name += fields[i] + " ";
+        }
+        return name;
+    }
+
     return <Modal visible={show} width={300} height={350}
                 modalAnimation={new SlideAnimation({
                 slideFrom: 'bottom' })}>
@@ -37,7 +47,7 @@ export const SymptomsModal = ({ show, onChangeShow }) => {
                                 rightElement={<ProgressBarAndroid styleAttr="Horizontal" containerStyle
                                                         indeterminate={false} color={"#EF3E36"}
                                                         progress={l.occurenceProbability} />}
-                                title={l.symptomName}
+                                title={processName(l.symptomName)}
                                 titleStyle={{ color: '#1E2952', fontSize:8 }}
                                 bottomDivider
                             />

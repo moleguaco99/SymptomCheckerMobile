@@ -3,6 +3,7 @@ import { useEffect, useCallback, useContext } from 'react';
 import { SymptomsContext } from './SymptomsContext';
 import _ from 'lodash';
 import { httpGet, httpPost, httpPostForDummies } from '../utils/Api';
+import { AsyncStorage } from 'react-native';
 
 const initialState = {
     isLoading: null,
@@ -62,14 +63,18 @@ export const SymptomsStore = ({ children }) => {
     }
 
     const onDiagnosisCheck = async () => {
+        const checking = JSON.parse(await AsyncStorage.getItem("CHECKED"));
         const setOfSymptoms = new Set(searchingSymptoms);
         let symptomsString = "";
-
+        
         for(var index = 0; index < setOfSymptoms.size; index += 1){
            symptomsString = symptomsString.concat(`${searchingSymptoms[index].symptomName};`)
         }
 
-        const response = await httpPost("diagnosis", symptomsString);
+        const response = await httpPost("diagnosis", {
+            symptoms: symptomsString,
+            displayAlgorithms: checking
+        });
         return response;
     }
 

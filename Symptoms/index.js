@@ -5,13 +5,15 @@ import { Home } from './Home';
 import { LoadingScreen } from './LoadingScreen';
 import { OrganPage } from './OrganPage';
 import { DiagnosticPage } from './DiagnosticPage';
+import { AnalysisPage } from './AnalysisPage';
 
 export const Symptoms = createStackNavigator(
     {
         Home: { screen: Home },
         LoadingScreen: { screen: LoadingScreen },
         OrganPage: { screen: OrganPage },
-        DiagnosticPage: { screen: DiagnosticPage }
+        DiagnosticPage: { screen: DiagnosticPage },
+        AnalysisPage : { screen: AnalysisPage }
     },
     {
         initialRouteName: "LoadingScreen",
