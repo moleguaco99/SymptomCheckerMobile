@@ -102,7 +102,7 @@ export const Home = ({ navigation }) => {
                     {({onDiagnosisCheck}) => (
                     <View style={{ marginTop:"2%", flexDirection:'row' }}>
                          <Button 
-                            buttonStyle={{ backgroundColor:"orange", marginLeft:'18%', width:130, borderRadius:20 }}
+                            buttonStyle={{ backgroundColor:"#0353A4", marginLeft:'18%', width:130, borderRadius:20 }}
                             icon={
                                 <Icon type='font-awesome' name="check-circle"
                                     size={13} color="white" />

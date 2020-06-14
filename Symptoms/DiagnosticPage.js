@@ -1,8 +1,8 @@
 import React from 'react';
-import { MainHeader } from '../components/headers/MainHeader';
 import { View, Text, FlatList } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { DiagnosticCard } from '../components/cards/DiagnosticCard';
+import { Icon } from 'react-native-elements';
+import { MainHeader } from '../components/headers/MainHeader';
 
 export const DiagnosticPage = ({ navigation }) => {
 

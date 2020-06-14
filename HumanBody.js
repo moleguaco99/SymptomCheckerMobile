@@ -2,7 +2,6 @@ import { View as GraphicsView } from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
 import OrbitControls from 'expo-three-orbit-controls'
 import React from 'react';
-import { Dimensions } from "react-native";
 
 export class HumanBody extends React.Component {
   constructor(){
@@ -65,7 +64,7 @@ export class HumanBody extends React.Component {
 
   loadModel = async () => {
     const obj = {
-    "f.obj": require('./assets/HumanBody.obj')
+      "f.obj": require('./assets/HumanBody.obj')
     }
 
     const model = await ExpoTHREE.loadAsync(

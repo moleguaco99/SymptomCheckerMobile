@@ -35,7 +35,7 @@ const CustomDrawerComponent = (props) => {
           source={require('./assets/logo.png')} />
       <ScrollView>
         <DrawerItems activeTintColor='#1E2952' {...props} />
-        <CheckBox title='Scientific mode'
+        <CheckBox title='Benchmarking mode'
             checked={check}
             checkedColor="#06D6A0"
             onPress={async () => { onCheck(!check); await AsyncStorage.setItem("CHECKED", JSON.stringify(!check)); console.log(JSON.parse(await AsyncStorage.getItem("CHECKED")))}}

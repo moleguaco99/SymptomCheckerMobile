@@ -37,7 +37,7 @@ export const OrgansModal = ({zone, navigation, height, marginTop, marginLeft, zI
                             activeScale={0.95} 
                             containerStyle={{ backgroundColor:"white", borderRadius:4, alignSelf:"center", elevation:1, marginBottom:"1%"}}
                             title={l}
-                            titleStyle={{ color: '#1E2952', fontSize:10 }}
+                            titleStyle={{ color: '#1E2952', fontSize:8 }}
                             chevron={{color: '#1E2952'}}
                             bottomDivider
                             onPress={()=> {navigation.navigate("OrganPage", {organ: l}); setShow(false)}}
@@ -46,7 +46,7 @@ export const OrgansModal = ({zone, navigation, height, marginTop, marginLeft, zI
                     </ScrollView>
                     <View style={{marginTop:"10%"}}>
                     <Button 
-                        buttonStyle={{backgroundColor:"#EF3E36", width:"50%", marginLeft:"50%", borderRadius:10}}
+                        buttonStyle={{backgroundColor:"#D33F49", width:"50%", marginLeft:"50%", borderRadius:10}}
                         icon={
                         <Icon
                             type='font-awesome'
@@ -54,7 +54,7 @@ export const OrgansModal = ({zone, navigation, height, marginTop, marginLeft, zI
                             size={10}
                             color="white"
                             />}
-                        title="Oops! Wrong part..."
+                        title="Go back"
                         titleStyle={{fontSize:10, fontWeight:'300', marginLeft:"2%"}}
                         onPress={()=>setShow(false)}/>
                     </View>

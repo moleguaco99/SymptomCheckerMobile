@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Dimensions, TouchableOpacity, FlatList, Text, ScrollView } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { MainHeader } from '../components/headers/MainHeader';
-import { Icon } from 'react-native-elements';
-import Animated from 'react-native-reanimated';
 import { DiagnosticCard } from '../components/cards/DiagnosticCard';
 import { BarChart, LineChart } from 'react-native-chart-kit';
+import { Icon } from 'react-native-elements';
+import { MainHeader } from '../components/headers/MainHeader';
 import { _ } from 'lodash';
+import Animated from 'react-native-reanimated';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -37,19 +37,26 @@ export const AnalysisPage = ({navigation}) => {
     );
 
     const ThirdRoute = () => (
-        <View style={{ backgroundColor: 'white', height:'92%' }}>
-        </View>
+      <View style={{ backgroundColor: 'white', height:'92%' }}>
+      <FlatList
+          data={Object.entries(navigation.state.params.diagnostics[2])}
+          renderItem={({item}) => <DiagnosticCard diseaseName={item[0]} expectance={item[1]} />}
+          keyExtractor={(item) => item[0]} />
+      </View>
     )
 
     function generateData(){  
       let labels = [];
       let datasetApriori = [];
       let datasetBayes = [];
+      let datasetKMeans = [];
       const ap = Object.entries(navigation.state.params.diagnostics[0]);
       const ba = Object.entries(navigation.state.params.diagnostics[1]);
+      const km = Object.entries(navigation.state.params.diagnostics[2]);
 
       if(ap.length >= 3){
         datasetBayes = [0, 0, 0];
+        datasetKMeans = [0, 0, 0];
         for(var i = 0; i < 3; i += 1){
             labels.push(ap[i][0].split("(")[0]);
             datasetApriori.push(ap[i][1] * 100);
@@ -63,6 +70,15 @@ export const AnalysisPage = ({navigation}) => {
           if(ba[i][0] === labels[2])
             datasetBayes[2] = ba[i][1] * 100;
         }
+
+        for(var i = 0; i < km.length; i += 1){
+          if(km[i][0] === labels[0])
+            datasetKMeans[0] = km[i][1] * 100;
+          if(km[i][0] === labels[1])
+            datasetKMeans[1] = km[i][1] * 100;
+          if(km[i][0] === labels[2])
+            datasetKMeans[2] = km[i][1] * 100;
+        }
       }
 
       else{
@@ -70,6 +86,7 @@ export const AnalysisPage = ({navigation}) => {
           labels.push(ap[i][0].split("(")[0]);
           datasetApriori.push(ap[i][1] * 100);
           datasetBayes.push(0);
+          datasetKMeans.push(0);
         }
         for(var i = 0; i < ba.length; i += 1){
           if(ba[i][0] === labels[0])
@@ -79,9 +96,17 @@ export const AnalysisPage = ({navigation}) => {
           if(ba[i][0] === labels[2])
             datasetBayes[2] = ba[i][1] * 100;
         }
+        for(var i = 0; i < km.length; i += 1){
+          if(km[i][0] === labels[0])
+            datasetKMeans[0] = km[i][1] * 100;
+          if(km[i][0] === labels[1])
+            datasetKMeans[1] = km[i][1] * 100;
+          if(km[i][0] === labels[2])
+            datasetKMeans[2] = km[i][1] * 100;
+        }
       }
 
-      let data = {
+    let data = {
         labels: labels,
         datasets: [
           {
@@ -91,9 +116,13 @@ export const AnalysisPage = ({navigation}) => {
           { 
             data: datasetBayes,
             color: (opacity = 1) => `rgba(15, 247, 160, ${opacity})`
+          },
+          { 
+            data: datasetKMeans,
+            color: (opacity = 1) => `rgba(111, 117, 20, ${opacity})`
           }
         ],
-        legend: ["Apriori", "Naive Bayes"]
+        legend: ["Apriori", "Naive Bayes", "KMeans"]
       }
       return data;
     }
@@ -119,21 +148,8 @@ export const AnalysisPage = ({navigation}) => {
           </View>
         );
       };
-
-      const barData = {
-        labels: [
-          'Apriori',
-          'Naive Bayes',
-          'KMeans',
-        ],
-        datasets: [
-          {
-            data: [5.0, 2.6, 2.8],
-          },
-        ],
-      };
       
-      const chartConfig = {
+    const chartConfig = {
         backgroundGradientFrom: '#1E2952',
         backgroundGradientTo: '#1E2952',
         color: (opacity = 1) => `rgba(122, 255, 255, ${opacity})`,
@@ -142,6 +158,19 @@ export const AnalysisPage = ({navigation}) => {
           justifyContent:'center',
         }
       }
+
+
+    const configureBarData = () => {
+        const array = Object.entries(navigation.state.params.diagnostics[3]);
+        
+        return { 
+          labels: ['Apriori', 'Naive Bayes', 'KMeans'],
+          datasets: [{
+              data: [array[0][1], array[1][1], array[2][1]]
+          }]
+        }
+      }
+      
 
     return <View style={{height:'100%', width:'100%', overflow:'scroll', backgroundColor:'white'}}>
                 <MainHeader navigation={navigation} backButton={true} />
@@ -164,10 +193,10 @@ export const AnalysisPage = ({navigation}) => {
                 <BarChart
                     yAxisSuffix={'s'}
                     style={{
-                      borderRadius: 10,
+                      borderRadius: 16,
                       alignSelf: 'center',
                     }}
-                    data={barData}
+                    data={configureBarData()}
                     width={Dimensions.get('window').width - 30}
                     height={195}
                     chartConfig={chartConfig}
